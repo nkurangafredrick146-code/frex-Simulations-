@@ -1,3 +1,7 @@
 # FrexTech Simulation
 
-Unified, modular video simulation engine with physics, ML, rendering, and quantum integrations.
+Welcome to the official documentation for FrexTech Simulation — a modular, scalable video simulation engine integrating physics, machine learning, rendering, and quantum environments.
+
+Explore the architecture, services, and usage guides to get started.
+
+![FrexTech Banner](assets/logo.png)
