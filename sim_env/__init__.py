@@ -1,5 +1,5 @@
 """
-Video Simulation Software - sim_env module
+frex Simulations - sim_env module
 Complete simulation environment with physics, rendering, ML, and quantum capabilities.
 """
 

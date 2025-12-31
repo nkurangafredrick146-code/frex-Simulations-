@@ -1,6 +1,6 @@
 # Contributing to FrexTech Simulation
 
-Thank you for your interest in contributing to the Video Simulation Software! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to frex Simulations! This document provides guidelines and instructions for contributing.
 
 ## Code of Conduct
 

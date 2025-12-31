@@ -364,9 +364,9 @@ class EmailService:
         
     def send_verification_email(self, email: str, verification_token: str):
         """Send email verification message"""
-        subject = "Verify Your Video Simulation Software Account"
+        subject = "Verify Your frex Simulations Account"
         body = f"""
-        Welcome to Video Simulation Software!
+        Welcome to frex Simulations!
         
         Please verify your email address by clicking the following link:
         https://your-domain.com/verify-email?token={verification_token}
@@ -374,14 +374,14 @@ class EmailService:
         If you didn't create an account, please ignore this email.
         
         Best regards,
-        Video Simulation Software Team
+        frex Simulations Team
         """
         
         self._send_email(email, subject, body)
         
     def send_password_reset_email(self, email: str, reset_token: str):
         """Send password reset email"""
-        subject = "Reset Your Video Simulation Software Password"
+        subject = "Reset Your frex Simulations Password"
         body = f"""
         You have requested to reset your password.
         
@@ -393,7 +393,7 @@ class EmailService:
         If you didn't request this reset, please ignore this email.
         
         Best regards,
-        Video Simulation Software Team
+        frex Simulations Team
         """
         
         self._send_email(email, subject, body)
@@ -411,7 +411,7 @@ class EmailService:
         If this wasn't you, please secure your account immediately.
         
         Best regards,
-        Video Simulation Software Security Team
+        frex Simulations Security Team
         """
         
         self._send_email(email, subject, body)

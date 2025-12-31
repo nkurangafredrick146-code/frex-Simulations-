@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2025-12-31
 
 ### Added
-- Initial release of Video Simulation Software
+- Initial release of frex Simulations
 - Real-time physics simulation engine
 - 3D rendering with OpenGL and Pygame
 - Machine learning integration with TensorFlow and PyTorch

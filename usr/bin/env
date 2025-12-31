@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Video Simulation Software - Complete Code Structure
+frex Simulations - Complete Code Structure
 Organized file structure for VS Code and GitHub development
 """
 
@@ -9,9 +9,9 @@ import shutil
 from pathlib import Path
 
 class CodeStructureCreator:
-    """Creates the complete code structure for Video Simulation Software"""
+    """Creates the complete code structure for frex Simulations"""
     
-    def __init__(self, project_root="video_simulation_software"):
+    def __init__(self, project_root="frex_simulations"):
         self.project_root = Path(project_root)
         self.structure = self.get_complete_structure()
         
@@ -204,7 +204,7 @@ class CodeStructureCreator:
     
     def create_structure(self):
         """Create the complete directory and file structure"""
-        print("🏗️ Creating Video Simulation Software structure...")
+        print("🏗️ Creating frex Simulations structure...")
         
         # Create root directory
         self.project_root.mkdir(exist_ok=True)
@@ -264,7 +264,7 @@ class CodeStructureCreator:
                 return self.get_pyproject_content()
         
         # Source code files
-        elif 'src/video_simulation_software' in relative_path:
+        elif 'src/frex_simulations' in relative_path:
             if filename.endswith('.py'):
                 return self.get_python_file_content(relative_path, filename)
         
@@ -284,7 +284,7 @@ class CodeStructureCreator:
         """Content for main application file"""
         return '''#!/usr/bin/env python3
 """
-Video Simulation Software - Main Application Entry Point
+frex Simulations - Main Application Entry Point
 Advanced simulation platform with real-time rendering and physics
 """
 
@@ -294,7 +294,7 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from video_simulation_software.main import main
+from frex_simulations.main import main
 
 if __name__ == "__main__":
     main()
@@ -307,7 +307,7 @@ if __name__ == "__main__":
         
         return f'''#!/usr/bin/env python3
 """
-Video Simulation Software - {class_name}
+frex Simulations - {class_name}
 {relative_path}/{filename}
 """
 
@@ -317,7 +317,7 @@ from OpenGL.GL import *
 import glm
 
 class {class_name}:
-    """{class_name} implementation for Video Simulation Software"""
+    """{class_name} implementation for frex Simulations"""
     
     def __init__(self):
         self.initialized = False
@@ -597,7 +597,7 @@ temp/
     
     def get_readme_content(self):
         """Content for README.md"""
-        return '''# Video Simulation Software
+        return '''# frex Simulations
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-green.svg)

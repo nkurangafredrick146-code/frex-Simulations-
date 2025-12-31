@@ -1,7 +1,7 @@
 markdown
-# Video Simulation Software
+# frex Simulations
 
-![Video Simulation Software](https://img.shields.io/badge/Version-1.0.0-blue.svg)
+![frex Simulations](https://img.shields.io/badge/Version-1.0.0-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.8+-green.svg)
 ![OpenGL](https://img.shields.io/badge/OpenGL-4.0+-orange.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
@@ -192,6 +192,6 @@ For support and questions:
 
 ---
 
-Video Simulation Software - Where Physics Meets Imagination 🎇
+frex Simulations - Where Physics Meets Imagination 🎇
 
 ```# Video-simulation-software-

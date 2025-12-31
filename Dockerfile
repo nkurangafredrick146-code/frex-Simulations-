@@ -1,4 +1,4 @@
-"""Docker configuration for Video Simulation Software."""
+"""Docker configuration for frex Simulations."""
 
 FROM python:3.12-slim
 

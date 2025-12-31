@@ -283,7 +283,7 @@ screenshots/
 
 def main():
     """Main installation and setup function"""
-    print("🎯 Video Simulation Software - Installation & Setup")
+    print("🎯 frex Simulations - Installation & Setup")
     print("=" * 50)
     
     # Check Python version

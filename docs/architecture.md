@@ -2,7 +2,7 @@
 
 ## System Overview
 
-The Video Simulation Software is a modular, scalable architecture supporting physics, machine learning, quantum computing, and advanced rendering.
+The frex Simulations system is a modular, scalable architecture supporting physics, machine learning, quantum computing, and advanced rendering.
 
 ```
 ┌─────────────────────────────────────────┐

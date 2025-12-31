@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Audio Integration Module for Video Simulation Software
+Audio Integration Module for frex Simulations
 Real-time audio synthesis and synchronization with physics simulations
 """
 

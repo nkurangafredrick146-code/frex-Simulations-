@@ -1,4 +1,4 @@
-"""Logging configuration for Video Simulation Software."""
+"""Logging configuration for frex Simulations."""
 
 import logging
 import logging.handlers

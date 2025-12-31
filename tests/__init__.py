@@ -1,1 +1,1 @@
-"""Test suite for Video Simulation Software."""
+"""Test suite for frex Simulations."""

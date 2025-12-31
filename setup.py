@@ -1,5 +1,5 @@
 p"""
-Setup configuration for Video Simulation Software
+Setup configuration for frex Simulations
 """
 
 from setuptools import setup, find_packages

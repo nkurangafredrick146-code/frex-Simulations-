@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Video Simulation Software - Updated Main Application
+frex Simulations - Updated Main Application
 Enhanced main application with complete ultimate integration
 """
 
@@ -89,7 +89,7 @@ class EnhancedVideoSimulationSoftware:
         
     def initialize(self):
         """Initialize the enhanced complete application"""
-        print("🚀 Initializing Enhanced Video Simulation Software...")
+        print("🚀 Initializing frex Simulations...")
         
         # Initialize Pygame and OpenGL
         pygame.init()
@@ -97,7 +97,7 @@ class EnhancedVideoSimulationSoftware:
             (self.config["window_width"], self.config["window_height"]), 
             pygame.OPENGL | pygame.DOUBLEBUF | pygame.RESIZABLE
         )
-        pygame.display.set_caption("Video Simulation Software - Ultimate Integrated Platform")
+        pygame.display.set_caption("frex Simulations - Ultimate Integrated Platform")
         
         # Set enhanced window icon
         self.set_window_icon()
@@ -122,7 +122,7 @@ class EnhancedVideoSimulationSoftware:
         # Initialize export system
         self.initialize_export_system()
         
-        print("✅ Enhanced Video Simulation Software initialized successfully!")
+        print("✅ frex Simulations initialized successfully!")
         print(f"🎯 Available simulations: {list(self.simulation_types.keys())}")
         if self.ultimate_integration:
             print(f"🔗 Ultimate Integration: ACTIVE (Level: {self.config['integration_level']})")
@@ -756,7 +756,7 @@ class EnhancedVideoSimulationSoftware:
     
     def clean_shutdown(self):
         """Perform enhanced clean shutdown of all systems"""
-        print("🔴 Shutting down Enhanced Video Simulation Software...")
+        print("🔴 Shutting down frex Simulations...")
         
         # Stop all simulations
         if self.current_simulation:

@@ -1,4 +1,4 @@
-"""Configuration for Video Simulation Software environment variables."""
+"""Configuration for frex Simulations environment variables."""
 
 import os
 from pathlib import Path

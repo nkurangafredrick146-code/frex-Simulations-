@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide provides information for developers contributing to the Video Simulation Software project.
+This guide provides information for developers contributing to the frex Simulations project.
 
 ## Table of Contents
 - [Setup](#setup)

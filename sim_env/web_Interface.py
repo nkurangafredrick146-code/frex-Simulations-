@@ -115,7 +115,7 @@ class WebInterfaceManager:
     def __init__(self):
         # FastAPI app
         self.app = FastAPI(
-            title="Video Simulation Software Web Interface",
+            title="frex Simulations Web Interface",
             description="Real-time web interface for advanced physics simulations",
             version="1.0.0",
             docs_url="/api/docs",
@@ -938,7 +938,7 @@ class WebInterfaceManager:
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Video Simulation Software - Web Interface</title>
+                <title>frex Simulations - Web Interface</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
@@ -966,7 +966,7 @@ class WebInterfaceManager:
         </head>
         <body>
             <div class="container">
-                <h1>Video Simulation Software - Web Interface</h1>
+                <h1>frex Simulations - Web Interface</h1>
                 <div id="status" class="status stopped">Status: Loading...</div>
                 <div id="content">
                     <p>Web interface is running. Use the API endpoints to interact with simulations.</p>
