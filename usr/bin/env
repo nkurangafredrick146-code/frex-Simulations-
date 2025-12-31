@@ -38,7 +38,7 @@ class CodeStructureCreator:
             ],
             
             # Core application modules
-            'src/video_simulation_software': [
+            'src/frex_simulations': [
                 '__init__.py',
                 'main.py',
                 'config.py',
@@ -78,7 +78,7 @@ class CodeStructureCreator:
             ],
             
             # Example simulations
-            'src/video_simulation_software/examples': [
+            'src/frex_simulations/examples': [
                 '__init__.py',
                 'basic_simulations.py',
                 'advanced_simulations.py',
@@ -622,8 +622,8 @@ temp/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/video_simulation_software.git
-cd video_simulation_software
+git clone https://github.com/nkurangafredrick146-code/frex-simulations.git
+cd frex-simulations
 
 # Install dependencies
 python install_dependencies.py

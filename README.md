@@ -27,8 +27,8 @@ A comprehensive, real-time video simulation software that combines cutting-edge 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/video-simulation-software.git
-cd video-simulation-software
+git clone https://github.com/nkurangafredrick146-code/frex-simulations.git
+cd frex-simulations
 
 # Install dependencies
 pip install -r requirements.txt
@@ -49,7 +49,7 @@ python main.py
 🎮 Quick Start
 
 ```python
-from video_simulation_software import VideoSimulationSoftware
+from frex_simulations import VideoSimulationSoftware
 
 # Create and run simulation
 app = VideoSimulationSoftware()
@@ -103,7 +103,7 @@ The software is built with a modular architecture:
 📁 Project Structure
 
 ```
-video-simulation-software/
+frex-simulations/
 ├── main.py                 # Main application
 ├── physics_simulation_module.py
 ├── particle_system.py

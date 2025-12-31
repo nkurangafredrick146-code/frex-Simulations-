@@ -7,7 +7,7 @@ __author__ = "nkurangafredrick146-code"
 __author_email__ = "frextech@example.com"
 __license__ = "MIT"
 __description__ = "A modular video simulation engine with physics, ML, rendering, and quantum capabilities"
-__url__ = "https://github.com/nkurangafredrick146-code/Video-simulation-software-"
+__url__ = "https://github.com/nkurangafredrick146-code/frex-simulations"
 
 __all__ = [
     "__version__",

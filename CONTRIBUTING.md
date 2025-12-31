@@ -54,8 +54,8 @@ Submit feature requests as GitHub issues with:
 
 1. Clone and install in development mode:
    ```bash
-   git clone https://github.com/nkurangafredrick146-code/Video-simulation-software-.git
-   cd Video-simulation-software-
+   git clone https://github.com/nkurangafredrick146-code/frex-simulations.git
+   cd frex-simulations
    python -m venv venv
    source venv/bin/activate
    pip install -e ".[dev]"

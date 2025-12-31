@@ -21,8 +21,8 @@ This guide provides information for developers contributing to the frex Simulati
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/nkurangafredrick146-code/Video-simulation-software-.git
-cd Video-simulation-software-
+git clone https://github.com/nkurangafredrick146-code/frex-simulations.git
+cd frex-simulations
 ```
 
 2. Create a virtual environment:
