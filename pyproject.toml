@@ -3,7 +3,7 @@ requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "frextech-simulation"
+name = "frex-simulations"
 version = "0.1.0"
 description = "A modular video simulation engine with physics, ML, rendering, and quantum capabilities"
 readme = "README.md"
@@ -69,10 +69,10 @@ gpu = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/nkurangafredrick146-code/Video-simulation-software-"
-Repository = "https://github.com/nkurangafredrick146-code/Video-simulation-software-.git"
-"Bug Tracker" = "https://github.com/nkurangafredrick146-code/Video-simulation-software-/issues"
-Documentation = "https://nkurangafredrick146-code.github.io/Video-simulation-software-/"
+Homepage = "https://github.com/nkurangafredrick146-code/frex-simulations"
+Repository = "https://github.com/nkurangafredrick146-code/frex-simulations.git"
+"Bug Tracker" = "https://github.com/nkurangafredrick146-code/frex-simulations/issues"
+Documentation = "https://nkurangafredrick146-code.github.io/frex-simulations/"
 
 [tool.setuptools.packages.find]
 where = ["."]

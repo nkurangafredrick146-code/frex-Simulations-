@@ -11,13 +11,13 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
 
 setup(
-    name="frextech-simulation",
+    name="frex-simulations",
     version="0.1.0",
     author="nkurangafredrick146-code",
     description="A modular video simulation engine with physics, ML, rendering, and quantum capabilities",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/nkurangafredrick146-code/Video-simulation-software-",
+    url="https://github.com/nkurangafredrick146-code/frex-simulations",
     packages=find_packages(exclude=["tests", "docs", "examples"]),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -51,7 +51,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "frextech-sim=sim_env.main:main",
+            "frex-sim=sim_env.main:main",
         ],
     },
 )
