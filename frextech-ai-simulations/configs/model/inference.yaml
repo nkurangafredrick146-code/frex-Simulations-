@@ -1,0 +1,443 @@
+# Inference configuration for FrexTech AI World Model
+# Version: 1.0.0
+
+inference:
+  # Model loading
+  model:
+    checkpoint_path: "./models/world_model/latest/model.safetensors"
+    config_path: "./configs/model/base.yaml"
+    device: "cuda"  # cuda, cpu, auto
+    dtype: "bfloat16"  # float32, float16, bfloat16
+    compile: false  # torch.compile
+    compile_mode: "reduce-overhead"  # default, reduce-overhead, max-autotune
+    
+    # Model sharding (for large models)
+    sharding:
+      enabled: false
+      strategy: "fsdp"  # fsdp, tensor_parallel, pipeline_parallel
+      shard_count: 4
+      
+    # Quantization
+    quantization:
+      enabled: false
+      method: "int8"  # int8, int4, gptq, awq
+      calibration_samples: 128
+      per_channel: true
+      
+    # Offloading (for CPU/GPU hybrid)
+    offloading:
+      enabled: false
+      offload_to: "cpu"  # cpu, disk
+      offload_layers: []  # List of layer indices to offload
+      
+  # Generation parameters
+  generation:
+    # Basic parameters
+    num_samples: 1
+    seed: null  # null for random
+    deterministic: true
+    
+    # Guidance
+    guidance_scale: 7.5
+    classifier_free_guidance: true
+    unconditional_conditioning: null  # null for learned null embedding
+    
+    # Steps and scheduling
+    num_inference_steps: 50
+    timestep_spacing: "trailing"  # leading, trailing, spacing
+    order: 1  # 1, 2, 3 for higher order samplers
+    
+    # Sampler selection
+    sampler: "ddim"  # ddim, dpm, euler, heun, lms, pndm, dpm_solver, unipc
+    sampler_params:
+      # DDIM specific
+      ddim_eta: 0.0
+      ddim_discretize: "uniform"
+      
+      # DPM Solver specific
+      dpm_solver_order: 2
+      dpm_solver_skip_type: "time_uniform"
+      dpm_solver_method: "singlestep"
+      
+      # Euler specific
+      euler_atol: 1e-4
+      euler_rtol: 1e-4
+      
+    # Negative prompt handling
+    negative_prompt: ""
+    negative_prompt_scale: 1.0
+    negative_prompt_cutoff: 0.0
+    
+  # Text conditioning
+  text:
+    # Text encoder
+    encoder: "clip"
+    model_name: "openai/clip-vit-large-patch14"
+    max_length: 77
+    truncation: true
+    padding: "max_length"
+    
+    # Prompt engineering
+    prompt_template: "{prompt}"
+    prompt_expansion: false
+    expansion_model: "gpt-3.5-turbo"
+    expansion_temperature: 0.7
+    
+    # Negative prompts
+    negative_prompts:
+      - "blurry, low quality, distorted, ugly"
+      - "deformed, disfigured, poorly drawn"
+      - "extra limbs, missing limbs, fused limbs"
+      
+  # Image conditioning
+  image:
+    # Image preprocessing
+    resize_mode: "center_crop"  # center_crop, resize, pad
+    size: [512, 512]
+    normalize: true
+    mean: [0.48145466, 0.4578275, 0.40821073]  # CLIP stats
+    std: [0.26862954, 0.26130258, 0.27577711]
+    
+    # Image guidance
+    strength: 0.8  # For img2img
+    start_step: 0  # Start step for img2img
+    
+    # ControlNet-like conditioning
+    control_conditions: []
+    
+  # Video conditioning
+  video:
+    # Video preprocessing
+    num_frames: 16
+    frame_rate: 8
+    resize_mode: "center_crop"
+    size: [256, 256]
+    
+    # Temporal consistency
+    temporal_consistency_weight: 1.0
+    use_optical_flow: true
+    flow_model: "raft"
+    
+  # 3D scene conditioning
+  scene:
+    # Input formats
+    formats: ["pointcloud", "mesh", "voxel", "nerf"]
+    
+    # Preprocessing
+    normalize: true
+    center: true
+    scale: 1.0
+    
+    # View conditioning
+    num_views: 4
+    view_angles: [[0, 0], [0, 90], [90, 0], [45, 45]]
+    
+  # Multi-modal fusion
+  fusion:
+    method: "cross_attention"  # concatenation, cross_attention, transformer
+    attention_layers: [4, 8, 12, 16]  # Which layers to apply fusion
+    
+    # Weighting
+    modality_weights:
+      text: 1.0
+      image: 0.8
+      video: 0.6
+      scene: 0.7
+      
+  # Representation generation
+  representation:
+    type: "gaussian_splatting"  # nerf, mesh, voxel, gaussian_splatting
+    
+    # Gaussian splatting
+    gaussian_splatting:
+      num_gaussians: 500000
+      sh_degree: 3
+      opacity_threshold: 0.005
+      pruning_threshold: 0.01
+      
+    # NeRF
+    nerf:
+      num_rays: 1024
+      num_samples_coarse: 64
+      num_samples_fine: 128
+      white_background: true
+      
+    # Mesh
+    mesh:
+      resolution: 256
+      marching_cubes_threshold: 0.5
+      simplify: true
+      target_faces: 50000
+      
+    # Voxel
+    voxel:
+      resolution: 128
+      threshold: 0.5
+      
+  # Post-processing
+  post_processing:
+    # Image post-processing
+    image:
+      denoise: true
+      denoise_strength: 0.5
+      sharpen: true
+      sharpen_strength: 0.3
+      contrast: 1.1
+      brightness: 1.0
+      saturation: 1.0
+      upscale: false
+      upscale_factor: 2
+      upscale_model: "real-esrgan"
+      
+    # 3D post-processing
+    scene:
+      cleanup: true
+      remove_outliers: true
+      outlier_threshold: 1.5
+      smooth: true
+      smooth_iterations: 2
+      remesh: false
+      decimate: true
+      target_faces: 100000
+      
+    # Video post-processing
+    video:
+      interpolate: false
+      interpolation_factor: 2
+      stabilize: true
+      color_correct: true
+      
+  # Caching
+  cache:
+    enabled: true
+    directory: "./cache/inference"
+    max_size: "10GB"
+    cleanup_frequency: 3600  # seconds
+    
+    # Embedding cache
+    embeddings:
+      enabled: true
+      ttl: 86400  # 24 hours
+      
+    # Result cache
+    results:
+      enabled: true
+      ttl: 3600  # 1 hour
+      
+  # Performance optimization
+  performance:
+    # Batch processing
+    batch_size: 1
+    max_batch_size: 8
+    
+    # Memory optimization
+    memory:
+      enable_cudnn_benchmark: true
+      enable_tf32: true
+      empty_cache_frequency: 10
+      
+    # Async processing
+    async_processing: true
+    max_queue_size: 100
+    num_workers: 4
+      
+    # Streaming output
+    streaming:
+      enabled: false
+      chunk_size: 1024
+      format: "mp4"  # For video streaming
+      
+  # Quality vs speed tradeoff
+  quality_preset: "balanced"  # fastest, fast, balanced, quality, best_quality
+    
+    # Preset configurations
+    presets:
+      fastest:
+        num_inference_steps: 20
+        guidance_scale: 3.0
+        sampler: "euler"
+        quality: "low"
+        
+      fast:
+        num_inference_steps: 30
+        guidance_scale: 5.0
+        sampler: "ddim"
+        quality: "medium"
+        
+      balanced:
+        num_inference_steps: 50
+        guidance_scale: 7.5
+        sampler: "dpm_solver"
+        quality: "high"
+        
+      quality:
+        num_inference_steps: 100
+        guidance_scale: 7.5
+        sampler: "dpm_solver++"
+        quality: "very_high"
+        
+      best_quality:
+        num_inference_steps: 250
+        guidance_scale: 7.5
+        sampler: "dpm_solver++"
+        quality: "ultra"
+        
+  # Safety filters
+  safety:
+    enabled: true
+    
+    # Content filtering
+    content_filter:
+      enabled: true
+      model: "clip"
+      threshold: 0.8
+      blocked_categories: ["nsfw", "violence", "hate"]
+      
+    # Watermarking
+    watermark:
+      enabled: true
+      text: "Generated by FrexTech AI"
+      opacity: 0.3
+      position: "bottom_right"
+      
+    # Metadata
+    metadata:
+      enabled: true
+      include_model_info: true
+      include_generation_params: true
+      include_safety_scores: true
+      
+  # Error handling
+  error_handling:
+    max_retries: 3
+    retry_delay: 1.0
+    fallback_model: null
+    graceful_degradation: true
+    
+  # Monitoring
+  monitoring:
+    # Logging
+    log_level: "INFO"
+    log_format: "json"
+    
+    # Metrics
+    metrics:
+      enabled: true
+      endpoint: "/metrics"
+      port: 9090
+      
+    # Tracing
+    tracing:
+      enabled: false
+      endpoint: "jaeger:6831"
+      
+    # Profiling
+    profiling:
+      enabled: false
+      profile_path: "./profiles"
+      
+  # API integration
+  api:
+    # REST API
+    rest:
+      host: "0.0.0.0"
+      port: 8000
+      workers: 4
+      timeout: 300
+      
+    # WebSocket
+    websocket:
+      enabled: true
+      path: "/ws"
+      ping_interval: 30
+      
+    # GraphQL
+    graphql:
+      enabled: false
+      path: "/graphql"
+      
+    # gRPC
+    grpc:
+      enabled: false
+      port: 50051
+      
+  # Export formats
+  export:
+    # Image formats
+    image:
+      format: "png"  # png, jpg, webp
+      quality: 95
+      compression: 6
+      
+    # Video formats
+    video:
+      format: "mp4"  # mp4, webm, gif
+      codec: "h264"
+      fps: 30
+      quality: 23  # CRF for h264
+      
+    # 3D formats
+    scene:
+      formats: ["glb", "ply", "obj", "usd"]
+      default: "glb"
+      include_textures: true
+      compress: true
+      
+    # Point cloud formats
+    pointcloud:
+      formats: ["ply", "xyz", "pcd"]
+      default: "ply"
+      
+  # Storage
+  storage:
+    # Local storage
+    local:
+      enabled: true
+      directory: "./outputs"
+      organize_by_date: true
+      max_files: 10000
+      
+    # Cloud storage
+    s3:
+      enabled: false
+      bucket: "frextech-outputs"
+      region: "us-east-1"
+      prefix: "generations/"
+      
+    # Database
+    database:
+      enabled: false
+      url: "postgresql://user:pass@localhost/frextech"
+      table: "generations"
+      
+  # Versioning
+  version:
+    model_version: "1.0.0"
+    inference_version: "1.0.0"
+    compatibility:
+      min_client_version: "1.0.0"
+      deprecated_features: []
+      
+  # Experimental features
+  experimental:
+    # Novel view synthesis
+    novel_view:
+      enabled: false
+      num_views: 8
+      trajectory: "orbit"
+      
+    # Style transfer
+    style_transfer:
+      enabled: false
+      reference_image: null
+      strength: 0.5
+      
+    # Inpainting
+    inpainting:
+      enabled: false
+      mask_dilation: 5
+      
+    # Outpainting
+    outpainting:
+      enabled: false
+      expansion_factor: 1.5
