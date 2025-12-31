@@ -25,7 +25,7 @@ The Physics module provides advanced physics simulation capabilities including p
 ## Usage Example
 
 ```python
-from frex_simulations.Physics_simulation_module import PhysicsEngine, Particle
+from sim_env.Physics_simulation_module import PhysicsEngine, Particle
 
 # Initialize physics engine
 engine = PhysicsEngine()
@@ -43,7 +43,7 @@ engine.update(dt=0.016)  # 60 FPS
 Customize physics behavior via `PhysicsSettings`:
 
 ```python
-from frex_simulations.Physics_simulation_module import PhysicsSettings
+from sim_env.Physics_simulation_module import PhysicsSettings
 
 settings = PhysicsSettings()
 settings.gravity = (0, -9.81, 0)

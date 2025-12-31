@@ -29,7 +29,7 @@ The ML module integrates machine learning capabilities for neural rendering, phy
 ## Usage Example
 
 ```python
-from frex_simulations.ml_pipeline import MLPipeline, DataLoader
+from sim_env.ml_pipeline import MLPipeline, DataLoader
 
 # Initialize ML pipeline
 pipeline = MLPipeline(model_type='mlp')
@@ -49,7 +49,7 @@ predictions = pipeline.predict(test_data)
 Use trained models to enhance or accelerate simulations:
 
 ```python
-from frex_simulations.neural_Physics import NeuralPhysicsEngine
+from sim_env.neural_Physics import NeuralPhysicsEngine
 
 engine = NeuralPhysicsEngine(model='trained_physics_model.pth')
 state = engine.predict_next_state(current_state)

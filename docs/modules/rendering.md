@@ -32,7 +32,7 @@ The Rendering module provides advanced 3D rendering with ray tracing, neural ren
 ## Usage Example
 
 ```python
-from frex_simulations.Rendering_engine import Renderer, Scene, Camera
+from sim_env.Rendering_engine import Renderer, Scene, Camera
 
 # Initialize renderer
 renderer = Renderer(width=1920, height=1080)
@@ -49,7 +49,7 @@ renderer.render(scene)
 ## Ray Tracing
 
 ```python
-from frex_simulations.ray_&_Path_Tracing import RayTracer
+from sim_env.ray_&_Path_Tracing import RayTracer
 
 tracer = RayTracer(width=1024, height=1024, samples=256)
 image = tracer.trace_scene(scene)
