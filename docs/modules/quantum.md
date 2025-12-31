@@ -26,7 +26,7 @@ The Quantum module provides quantum computing simulation, quantum physics visual
 ## Usage Example
 
 ```python
-from sim_env.quantum_computing_Hybrid import QuantumCircuit, Qubit
+from frex_simulations.quantum_computing_Hybrid import QuantumCircuit, Qubit
 
 # Initialize quantum circuit
 circuit = QuantumCircuit(num_qubits=3)
@@ -43,7 +43,7 @@ print(results)
 ## Quantum Physics Simulation
 
 ```python
-from sim_env.Quantum_Physics_simulations import QuantumSystem
+from frex_simulations.Quantum_Physics_simulations import QuantumSystem
 
 # Create quantum system
 system = QuantumSystem(num_particles=10)

@@ -31,8 +31,8 @@
 ### Basic Example
 
 ```python
-from sim_env.main import EnhancedVideoSimulationSoftware
-from sim_env.Physics_simulation_module import PhysicsEngine, Particle
+from frex_simulations.main import EnhancedVideoSimulationSoftware
+from frex_simulations.Physics_simulation_module import PhysicsEngine, Particle
 
 # Initialize simulation
 sim = EnhancedVideoSimulationSoftware()

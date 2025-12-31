@@ -5,7 +5,7 @@ import logging.handlers
 from pathlib import Path
 from typing import Optional
 
-from sim_env.config import LOGS_DIR, LOG_LEVEL, LOG_FORMAT
+from frex_simulations.config import LOGS_DIR, LOG_LEVEL, LOG_FORMAT
 
 
 def setup_logging(

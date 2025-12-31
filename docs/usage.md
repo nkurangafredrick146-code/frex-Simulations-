@@ -5,7 +5,7 @@
 ### Particle Simulation with Physics
 
 ```python
-from sim_env.Physics_simulation_module import PhysicsEngine, Particle, PhysicsSettings
+from frex_simulations.Physics_simulation_module import PhysicsEngine, Particle, PhysicsSettings
 import numpy as np
 
 # Configure physics
@@ -38,7 +38,7 @@ for _ in range(6000):  # 100 seconds
 ### Fluid Dynamics
 
 ```python
-from sim_env.fluid_dynamics import FluidSimulation
+from frex_simulations.fluid_dynamics import FluidSimulation
 
 # Initialize fluid solver
 fluid = FluidSimulation(
@@ -58,8 +58,8 @@ for _ in range(1000):
 ### Machine Learning Integration
 
 ```python
-from sim_env.ml_pipeline import MLPipeline
-from sim_env.neural_Physics import NeuralPhysicsEngine
+from frex_simulations.ml_pipeline import MLPipeline
+from frex_simulations.neural_Physics import NeuralPhysicsEngine
 
 # Train a neural physics model
 pipeline = MLPipeline(model_type='physics_predictor')
@@ -75,7 +75,7 @@ for _ in range(1000):
 ### Quantum Simulation
 
 ```python
-from sim_env.quantum_computing_Hybrid import QuantumCircuit
+from frex_simulations.quantum_computing_Hybrid import QuantumCircuit
 
 # Create and run quantum circuit
 circuit = QuantumCircuit(num_qubits=5)
@@ -90,8 +90,8 @@ print(f"Measurement results: {results}")
 ### Real-Time Rendering
 
 ```python
-from sim_env.Rendering_engine import Renderer, Scene
-from sim_env.realtime_gui import RealtimeGUI
+from frex_simulations.Rendering_engine import Renderer, Scene
+from frex_simulations.realtime_gui import RealtimeGUI
 
 # Create renderer
 renderer = Renderer(width=1920, height=1080)
