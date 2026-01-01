@@ -1,9 +1,221 @@
-"""Top-level shim: re-export core fluid implementation"""
-from sim_env.core.fluid.fluid_dynamics import *
+"""
+Complete Fluid Dynamics Simulation Module
+Advanced fluid simulation using Smoothed Particle Hydrodynamics (SPH) and grid-based methods
+"""
 
-__all__ = [name for name in globals() if not name.startswith("_")]
+import numpy as np
+import glm
 
-# Backwards-compatible shim: re-export core fluid implementation.
+# Guard OpenGL imports so the module can be imported in headless environments.
+HAVE_OPENGL = True
+try:
+    from OpenGL.GL import *
+    from OpenGL.GL.shaders import *
+except Exception:
+    HAVE_OPENGL = False
+
+import numba
+from numba import jit, prange
+import math
+import time
+from typing import Dict, List, Any, Optional, Tuple
+import random
+
+class SPHParameters:
+    """Parameters for Smoothed Particle Hydrodynamics simulation"""
+    
+    def __init__(self):
+        # Fluid properties
+        self.rest_density = 1000.0  # kg/m³
+        self.gas_constant = 2000.0  # Equation of state constant
+        self.viscosity = 0.1       # Dynamic viscosity
+        self.surface_tension = 0.072  # Surface tension coefficient
+        
+        # SPH kernel parameters
+        self.kernel_radius = 0.2   # Smoothing kernel radius
+        self.particle_radius = 0.08  # Particle rendering radius
+        self.particle_mass = 1.0   # Particle mass
+        
+        # Simulation parameters
+        self.time_step = 0.016     # Simulation time step
+        self.substeps = 1          # Simulation substeps
+        self.gravity = glm.vec3(0, -9.81, 0)
+        
+        # Boundary conditions
+        self.boundary_stiffness = 10000.0
+        self.boundary_damping = 256.0
+        
+        # Advanced parameters
+        self.enable_vorticity = True
+        self.enable_surface_tension = True
+        self.vorticity_confinement = 0.1
+        self.artificial_pressure = 0.001
+        self.artificial_viscosity = 0.01
+
+@numba.jit(nopython=True, fastmath=True)
+def poly6_kernel(r_sq: float, h: float) -> float:
+    """Poly6 smoothing kernel for density estimation"""
+    if r_sq >= h * h:
+        return 0.0
+    h_sq = h * h
+    return (315.0 / (64.0 * math.pi * h_sq * h_sq * h)) * (h_sq - r_sq) ** 3
+
+@numba.jit(nopython=True, fastmath=True)
+def spiky_kernel_gradient(r_vec: np.ndarray, r_len: float, h: float) -> np.ndarray:
+    """Spiky kernel gradient for pressure forces"""
+    if r_len >= h or r_len < 1e-5:
+        return np.zeros(3, dtype=np.float32)
+    
+    scale = -45.0 / (math.pi * h ** 6) * (h - r_len) ** 2
+    return (r_vec / r_len) * scale
+
+@numba.jit(nopython=True, fastmath=True)
+def viscosity_kernel_laplacian(r_len: float, h: float) -> float:
+    """Viscosity kernel laplacian for viscous forces"""
+    if r_len >= h:
+        return 0.0
+    return 45.0 / (math.pi * h ** 6) * (h - r_len)
+
+@numba.jit(nopython=True, parallel=True)
+def calculate_density_pressure(positions: np.ndarray, densities: np.ndarray, 
+                              pressures: np.ndarray, mass: float, rest_density: float,
+                              gas_constant: float, kernel_radius: float, num_particles: int):
+    """Calculate density and pressure for all particles using SPH"""
+    h = kernel_radius
+    h_sq = h * h
+    
+    for i in prange(num_particles):
+        density = 0.0
+        
+        for j in range(num_particles):
+            if i == j:
+                continue
+                
+            # Calculate distance squared
+            dx = positions[i*3] - positions[j*3]
+            dy = positions[i*3+1] - positions[j*3+1]
+            dz = positions[i*3+2] - positions[j*3+2]
+            r_sq = dx*dx + dy*dy + dz*dz
+            
+            if r_sq < h_sq:
+                # Add contribution to density
+                density += mass * poly6_kernel(r_sq, h)
+        
+        # Self-density contribution
+        density += mass * poly6_kernel(0.0, h)
+        densities[i] = density
+        
+        # Calculate pressure using equation of state
+        pressures[i] = gas_constant * (density - rest_density)
+
+@numba.jit(nopython=True, parallel=True)
+def calculate_pressure_forces(positions: np.ndarray, velocities: np.ndarray, 
+                             forces: np.ndarray, densities: np.ndarray, 
+                             pressures: np.ndarray, mass: float, kernel_radius: float, 
+                             num_particles: int, artificial_pressure: float):
+    """Calculate pressure forces for all particles"""
+    h = kernel_radius
+    
+    for i in prange(num_particles):
+        pressure_force_x = 0.0
+        pressure_force_y = 0.0
+        pressure_force_z = 0.0
+        
+        if densities[i] < 1e-5:
+            continue
+            
+        for j in range(num_particles):
+            if i == j:
+                continue
+                
+            if densities[j] < 1e-5:
+                continue
+                
+            # Calculate distance vector
+            dx = positions[i*3] - positions[j*3]
+            dy = positions[i*3+1] - positions[j*3+1]
+            dz = positions[i*3+2] - positions[j*3+2]
+            r_len = math.sqrt(dx*dx + dy*dy + dz*dz)
+            
+            if 0 < r_len < h:
+                r_vec = np.array([dx, dy, dz], dtype=np.float32)
+                
+                # Calculate pressure force
+                pressure_accel = -mass * (pressures[i] + pressures[j]) / (2 * densities[j])
+                kernel_grad = spiky_kernel_gradient(r_vec, r_len, h)
+                
+                pressure_force_x += pressure_accel * kernel_grad[0]
+                pressure_force_y += pressure_accel * kernel_grad[1]
+                pressure_force_z += pressure_accel * kernel_grad[2]
+                
+                # Artificial pressure to prevent particle clustering
+                if artificial_pressure > 0:
+                    r_norm = r_len / h
+                    artificial_factor = artificial_pressure * (1 - r_norm) ** 3
+                    pressure_force_x += artificial_factor * (dx / r_len)
+                    pressure_force_y += artificial_factor * (dy / r_len)
+                    pressure_force_z += artificial_factor * (dz / r_len)
+        
+        forces[i*3] += pressure_force_x
+        forces[i*3+1] += pressure_force_y
+        forces[i*3+2] += pressure_force_z
+
+@numba.jit(nopython=True, parallel=True)
+def calculate_viscosity_forces(positions: np.ndarray, velocities: np.ndarray,
+                              forces: np.ndarray, densities: np.ndarray,
+                              mass: float, viscosity: float, kernel_radius: float,
+                              num_particles: int, artificial_viscosity: float):
+    """Calculate viscosity forces for all particles"""
+    h = kernel_radius
+    
+    for i in prange(num_particles):
+        viscosity_force_x = 0.0
+        viscosity_force_y = 0.0
+        viscosity_force_z = 0.0
+        
+        if densities[i] < 1e-5:
+            continue
+            
+        for j in range(num_particles):
+            if i == j:
+                continue
+                
+            if densities[j] < 1e-5:
+                continue
+                
+            # Calculate distance
+            dx = positions[i*3] - positions[j*3]
+            dy = positions[i*3+1] - positions[j*3+1]
+            dz = positions[i*3+2] - positions[j*3+2]
+            r_len = math.sqrt(dx*dx + dy*dy + dz*dz)
+            
+            if 0 < r_len < h:
+                # Velocity difference
+                dvx = velocities[i*3] - velocities[j*3]
+                dvy = velocities[i*3+1] - velocities[j*3+1]
+                dvz = velocities[i*3+2] - velocities[j*3+2]
+                
+                # Calculate viscosity force
+                viscosity_accel = viscosity * mass / densities[j]
+                kernel_lap = viscosity_kernel_laplacian(r_len, h)
+                
+                viscosity_force_x += viscosity_accel * dvx * kernel_lap
+                viscosity_force_y += viscosity_accel * dvy * kernel_lap
+                viscosity_force_z += viscosity_accel * dvz * kernel_lap
+                
+                # Artificial viscosity for stability
+                if artificial_viscosity > 0:
+                    dot_product = dx*dvx + dy*dvy + dz*dvz
+                    if dot_product < 0:  # Approaching particles
+                        artificial_factor = artificial_viscosity * dot_product / (r_len * densities[j])
+                        viscosity_force_x += artificial_factor * dx
+                        viscosity_force_y += artificial_factor * dy
+                        viscosity_force_z += artificial_factor * dz
+        
+        forces[i*3] += viscosity_force_x
+        forces[i*3+1] += viscosity_force_y
+        forces[i*3+2] += viscosity_force_z
+
 @numba.jit(nopython=True, parallel=True)
 def calculate_vorticity_forces(positions: np.ndarray, velocities: np.ndarray,
                               forces: np.ndarray, densities: np.ndarray,
