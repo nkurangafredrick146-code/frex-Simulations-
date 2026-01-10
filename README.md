@@ -49,10 +49,10 @@ python main.py
 🎮 Quick Start
 
 ```python
-from frex_simulations import VideoSimulationSoftware
+from frex_simulations import frex Simulations 
 
 # Create and run simulation
-app = VideoSimulationSoftware()
+app = frexsimulations()
 app.initialize()
 app.run()
 ```
@@ -194,4 +194,4 @@ For support and questions:
 
 frex Simulations - Where Physics Meets Imagination 🎇
 
-```# Video-simulation-software-
+```# frex_simulations-
