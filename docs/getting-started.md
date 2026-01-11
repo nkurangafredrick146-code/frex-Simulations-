@@ -31,7 +31,7 @@
 ### Basic Example
 
 ```python
-from sim_env.main import Enhanced frexsimulations 
+from sim_env.main import Enhancedfrexsimulations 
 from sim_env.Physics_simulation_module import PhysicsEngine, Particle
 
 # Initialize simulation
