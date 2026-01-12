@@ -1,4 +1,4 @@
-#!/workspaces/Video-simulation-software-/sim_env/bin/python3
+#!/workspaces/frex-simulations-/sim_env/bin/python3
 import sys
 from jsonschema.cli import main
 if __name__ == '__main__':
