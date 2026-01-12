@@ -620,7 +620,7 @@ temp/
 
 ### Installation
 
-```bash
+```bashy
 # Clone the repository
 git clone https://github.com/nkurangafredrick146-code/frex-simulations.git
 cd frex-simulations
